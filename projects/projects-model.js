@@ -4,7 +4,8 @@ module.exports = {
     getProjects,
     getProjectById,
     newProject,
-    getProjectTasks
+    getProjectTasks,
+    newTask
 }
 
 function getProjects(){
@@ -28,6 +29,11 @@ function newProject(info){
 function getProjectTasks(id){
     return db("tasks")
     .join("projects", "tasks.project_id", "projects.id")
-    .select("tasks.task_name", "tasks.description", "tasks.completed")
+    .select("projects.project_name","tasks.task_name", "tasks.description", "tasks.completed")
     .where("projects.id", id)
 }
+
+function newTask(task, id){
+    return db("tasks")
+    .insert({ task_name: task.task_name, description: task.description, completed: task.completed, project_id: id})
+};
