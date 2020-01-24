@@ -3,7 +3,8 @@ const db = require("../data/dbConfig");
 module.exports = {
     getProjects,
     getProjectById,
-    newProject
+    newProject,
+    getProjectTasks
 }
 
 function getProjects(){
@@ -23,3 +24,10 @@ function newProject(info){
         return getProjectById(ids[0])
     })
 };
+
+function getProjectTasks(id){
+    return db("tasks")
+    .join("projects", "tasks.project_id", "projects.id")
+    .select("tasks.task_name", "tasks.description", "tasks.completed")
+    .where("projects.id", id)
+}
